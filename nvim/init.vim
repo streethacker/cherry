@@ -1,6 +1,6 @@
 " @author: Douglas Su
 
-call plug#begin('~/.dot/nvim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 " Plugin tables
 Plug 'scrooloose/nerdcommenter'
@@ -21,13 +21,15 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'ivalkeen/nerdtree-execute'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 \ | Plug 'ryanoasis/vim-devicons'
 
 
 Plug 'rizzatti/dash.vim', { 'for': ['c', 'cpp', 'python', 'php'] }
 Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }
 Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'css', 'html', 'python'] }
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'vivien/vim-linux-coding-style', { 'for': ['c'] }
 
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
@@ -46,7 +48,7 @@ Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'crater2150/vim-theme-chroma'
 Plug 'aliou/moriarty.vim'
 Plug 'neovim/node-host', { 'do': 'npm install' }
-"Plug 'vimlab/mdown.vim', { 'do': 'npm install' }
+" Plug 'vimlab/mdown.vim', { 'do': 'npm install' }
 Plug 'kshenoy/vim-signature'
 Plug 'Yggdroot/indentLine'
 Plug 'vim-airline/vim-airline-themes'
@@ -55,6 +57,9 @@ Plug 'iamcco/mathjax-support-for-mkdp'
 " Plug 'iamcco/markdown-preview.vim'
 Plug 'sat1993/markdown-preview.vim'
 Plug 'jmcantrell/vim-virtualenv'
+Plug 'artur-shaik/vim-javacomplete2'
+Plug 'ervandew/supertab'
+Plug 'mzlogin/vim-markdown-toc'
 
 
 " Add plugins to &runtimepath
@@ -74,8 +79,8 @@ call plug#end()
 
 " Custom settings {
 	if LINUX()
-		let g:python3_host_prog = $HOME . '/.pyenv/versions/3.5.2/bin/python3.5'
-		let g:ycm_server_python_interpreter = $HOME . '/.pyenv/versions/3.5.2/bin/python3.5'
+		let g:python3_host_prog = '/usr/bin/python3'
+		let g:ycm_server_python_interpreter = '/usr/bin/python2'
 	endif
 " }
 
@@ -86,7 +91,6 @@ call plug#end()
 	filetype plugin indent on	" Automatically detect file types.
 	syntax on			" Syntax highlighting
 	set mousehide			" Hide the mouse cursor while typing
-
 
 	" Share content with the system's clipborad
 	set clipboard+=unnamedplus
@@ -129,8 +133,10 @@ call plug#end()
 
 	" Set the color scheme
 	set t_Co=256
-	set termguicolors
+	" set termguicolors
 	colorscheme distinguished
+	" colorscheme spacegray
+	" colorscheme mirodark
 
 	set showmode                    " Display the current mode
 
@@ -236,7 +242,7 @@ call plug#end()
 	vnoremap . :normal .<CR>
 
 	" For when you forget to sudo.. Really Write the file.
-	cmap w!! w !sudo tee % >/dev/null
+	cmap w!! w !sudo tee >/dev/null %
 
 	" Some helpers to edit mode
 	" http://vimcasts.org/e/14
@@ -323,7 +329,6 @@ call plug#end()
 	let g:airline_powerline_fonts = 0
 	let g:airline_theme = 'jellybeans'
 
-
 	" For patched power-line fonts
 	if !exists('g:airline_symbols')
 		let g:airline_symbols = {}
@@ -336,7 +341,7 @@ call plug#end()
 
 
 " YCM {
-	let g:ycm_python_binary_path = 'python'
+	let g:ycm_python_binary_path = '/usr/bin/python2'
 	let g:ycm_enable_diagnostic_signs = 0
 	let g:ycm_autoclose_preview_window_after_insertion = 1
 	let g:ycm_global_ycm_extra_conf = '~/.config/nvim/ycm_extra_conf.py'
@@ -470,8 +475,9 @@ call plug#end()
 " }
 
 " NERDtree {
-	map <F3> :NERDTreeToggle<cr>
-	let NERDTreeWinSize = 33
+	" map <F3> :NERDTreeToggle<cr>
+	map <leader>tt :NERDTreeToggle<cr>
+	let NERDTreeWinSize = 40
 	let NERDTreeShowBookmarks = 1
 	let NERDTreeIgnore = [
 		\'\.pyc',
@@ -492,10 +498,11 @@ call plug#end()
 
 " vim-devicons {
 	autocmd FileType nerdtree setlocal nolist
-	let g:WebDevIconsNerdTreeAfterGlyphPadding = ''
+	let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
 " }
 
 " vim-multi-cursors {
+	let g:multi_cursor_use_default_mapping=0
 	let g:multi_cursor_next_key='<C-j>'
 	let g:multi_cursor_prev_key='<C-k>'
 	let g:multi_cursor_skip_key='<C-x>'
@@ -509,10 +516,11 @@ call plug#end()
 " }
 
 " pymode {
-	let g:pymode_folding = 0
-	let g:pymode_lint_cwindow = 0
-	let g:pymode_lint_ignore = "E402"
-	let g:pymode_breakpoint_bind = '<leader>\'
+	let g:pymode_python = 'python'
+	let g:pymode_folding=0
+	let g:pymode_lint_cwindow=0
+	let g:pymode_lint_ignore=["E402"]
+	let g:pymode_breakpoint_bind='<leader>\'
 " }
 
 " mdown {
@@ -520,7 +528,7 @@ call plug#end()
 " }
 
 " indentLine {
-	let g:indentLine_enabled = 0
+	let g:indentLine_enabled=1
 	nnoremap <leader>ll :IndentLinesToggle<cr>
 " }
 
@@ -529,9 +537,28 @@ call plug#end()
 " }
 
 " MarkdownPreview {
-	let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
+	let g:mkdp_path_to_chrome="/usr/bin/google-chrome-stable"
 " }
 
 " vim table mode {
 	let g:table_mode_corner='|'
+" }
+
+" javacomplete2 {
+	autocmd FileType java setlocal omnifunc=javacomplete#Complete
+	let g:JavaComplete_JavaCompiler="/usr/lib/jvm/java-8-jdk/bin/javac"
+" }
+
+" supertab {
+	let g:SuperTabDefaultCompletionType="<c-x><c-o>"
+" }
+
+" vim-instant-markdown {
+	let g:instant_markdown_autostart = 0
+" }
+
+" c.vim {
+	let g:c_syntax_for_h = 1
+	let g:c_no_c99 = 0
+	let g:C_CFlags = "c99"
 " }
